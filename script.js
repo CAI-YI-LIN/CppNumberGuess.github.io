@@ -43,7 +43,7 @@ function submitGuess() {
   else {
     clearInterval(interval);
     const timeTaken = ((Date.now() - startTime) / 1000).toFixed(1);
-    result.textContent = `Congrats ${playerName}, you guessed it right! You took ${attempts} attempts and ${timeTaken} seconds.`;
+    result.textContent = `Congrats ${playerName}, you guessed it right!\n You took ${attempts} attempts and ${timeTaken} seconds.`;
   }
 }
 
