@@ -7,35 +7,28 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Number Guessing Game</h1>
+  <h1>Number Guessing Game</h1>
 
-    <div id="setup">
-      <input type="text" id="playerName" placeholder="Enter your name" />
-      <select id="difficulty">
-        <option value="1">Easy (1~10)</option>
-        <option value="2" selected>Normal (1~100)</option>
-        <option value="3">Hard (1~1000)</option>
-      </select>
-      <button id="startBtn" onclick="start()" disabled>Start Game</button>
-
-    </div>
-
-    <div id="game" style="display:none;">
-      <p id="instruction">Guess a number!</p>
-      <input type="number" id="guessInput" />
-      <button onclick="submit()">Submit</button>
-      <p id="result"></p>
-      <p id="timer">Time: 0.0s</p>
-      <button onclick="downloadLeaderboard()">Download Leaderboard</button>
-      <button id="restartBtn" onclick="restart()" style="display:none;">Play Again</button>
-    </div>
+  <div id="setup">
+    <input id="playerName" placeholder="Enter your name" />
+    <select id="difficulty">
+      <option value="10">Easy (1~10)</option>
+      <option value="100" selected>Normal (1~100)</option>
+      <option value="1000">Hard (1~1000)</option>
+    </select>
+    <br />
+    <button onclick="startGame()">Start Game</button>
   </div>
 
-  <script src="game.js"></script>
-  <script src="script.js"></script>
-  <script src="game.js"></script>
+  <div id="game" class="hidden">
+    <p id="instruction"></p>
+    <input id="guessInput" type="number" placeholder="Enter your guess number" />
+    <button onclick="submitGuess()">Guess！</button>
+    <p id="result"></p>
+    <p id="timer">⏱ Time: 0.0s</p>
+    <button onclick="restartGame()">Play Again</button>
+  </div>
 
-  
+  <script src="script.js"></script>
 </body>
 </html>
