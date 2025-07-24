@@ -1,53 +1,34 @@
-let target = 0;
-let maxNum = 100;
-let attempts = 0;
-let startTime = 0;
-let interval = null;
-let playerName = "";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Number Guessing Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Number Guessing Game</h1>
 
-function startGame() {
-  playerName = document.getElementById("playerName").value.trim();
-  maxNum = parseInt(document.getElementById("difficulty").value);
-  if (!playerName) {
-    alert("Please enter your name!");
-    return;
-  }
+  <div id="setup">
+    <input id="playerName" placeholder="Enter your name" />
+    <select id="difficulty">
+      <option value="10">Easy (1~10)</option>
+      <option value="100" selected>Normal (1~100)</option>
+      <option value="1000">Hard (1~1000)</option>
+    </select>
+    <br />
+    <button id="startBtn">Start Game</button>
+  </div>
 
-  target = Math.floor(Math.random() * maxNum) + 1;
-  attempts = 0;
-  startTime = Date.now();
+  <div id="game" class="hidden">
+    <p id="instruction"></p>
+    <input id="guessInput" type="number" placeholder="Enter your guess number" />
+    <button id="guessBtn">Guess!</button>
+    <p id="result"></p>
+    <p id="timer">⏱ Time: 0.0s</p>
+    <button id="restartBtn">Play Again</button>
+  </div>
 
-  document.getElementById("setup").classList.add("hidden");
-  document.getElementById("game").classList.remove("hidden");
-  document.getElementById("instruction").textContent = `Good luck, ${playerName}! Guess a number between 1 and ${maxNum}.`;
-  document.getElementById("result").textContent = "";
-  document.getElementById("guessInput").value = "";
-  updateTimer();
-  interval = setInterval(updateTimer, 100);
-}
-
-function updateTimer() {
-  const elapsed = (Date.now() - startTime) / 1000;
-  document.getElementById("timer").textContent = `⏱ Time: ${elapsed.toFixed(1)}s`;
-}
-
-function submitGuess() {
-  const guess = parseInt(document.getElementById("guessInput").value);
-  if (isNaN(guess)) return;
-
-  attempts++;
-
-  const result = document.getElementById("result");
-  if (guess > target) result.textContent = "Too high!";
-  else if (guess < target) result.textContent = "Too low!";
-  else {
-    clearInterval(interval);
-    const timeTaken = ((Date.now() - startTime) / 1000).toFixed(1);
-    result.textContent = `Congrats ${playerName}, you guessed it right! You took ${attempts} attempts and ${timeTaken} seconds.`;
-  }
-}
-
-function restartGame() {
-  document.getElementById("game").classList.add("hidden");
-  document.getElementById("setup").classList.remove("hidden");
-}
+  <script src="script.js"></script>
+</body>
+</html>
