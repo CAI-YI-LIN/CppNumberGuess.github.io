@@ -1,58 +1,39 @@
 body {
-  background-color: #121212;
-  color: #ffffff;
-  font-family: 'Segoe UI', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 40px;
-  min-height: 100vh;
-  margin: 0;
-}
-
-.container {
-  background-color: #1e1e1e;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  width: 90%;
+  font-family: Arial, sans-serif;
   max-width: 400px;
-  text-align: center;
-}
-
-input, select, button {
-  width: 100%;
+  margin: 30px auto;
   padding: 10px;
-  margin: 10px 0;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  box-sizing: border-box;
-}
-
-input, select {
-  background-color: #2a2a2a;
-  color: #ffffff;
-}
-
-button {
-  background-color: #0077cc;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #005fa3;
+  text-align: center;
+  background: #f0f0f0;
+  color: #333;
 }
 
 .hidden {
   display: none;
 }
 
+input, select, button {
+  margin: 10px 0;
+  padding: 8px 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+button {
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
 #timer {
   font-weight: bold;
   margin-top: 10px;
-  color: #90caf9;
 }
 
 #result {
