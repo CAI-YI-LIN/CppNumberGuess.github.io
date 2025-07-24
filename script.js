@@ -1,5 +1,12 @@
 let startTime = 0;
 let interval;
+let wasmReady = false;
+
+Module.onRuntimeInitialized = function () {
+  wasmReady = true;
+  document.getElementById('startBtn').disabled = false;
+  console.log("WASM module initialized");
+};
 
 function start() {
   const name = document.getElementById('playerName').value;
