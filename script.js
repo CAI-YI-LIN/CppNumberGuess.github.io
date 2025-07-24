@@ -1,76 +1,53 @@
+let target = 0;
+let maxNum = 100;
+let attempts = 0;
 let startTime = 0;
-let interval;
-let wasmReady = false;
+let interval = null;
+let playerName = "";
 
-Module.onRuntimeInitialized = function () {
-  wasmReady = true;
-  document.getElementById('startBtn').disabled = false;
-  console.log("WASM module initialized");
-};
-
-function start() {
-  const name = document.getElementById('playerName').value;
-  const difficulty = parseInt(document.getElementById('difficulty').value);
-
-  if (!name) {
-    alert("Please enter your name.");
+function startGame() {
+  playerName = document.getElementById("playerName").value.trim();
+  maxNum = parseInt(document.getElementById("difficulty").value);
+  if (!playerName) {
+    alert("Please enter your name!");
     return;
   }
 
-  Module.ccall('startGame', null, ['number'], [difficulty]);
-  document.getElementById('setup').style.display = 'none';
-  document.getElementById('game').style.display = 'block';
-  document.getElementById('result').textContent = '';
-  document.getElementById('instruction').textContent = `Good luck, ${name}!`;
-
+  target = Math.floor(Math.random() * maxNum) + 1;
+  attempts = 0;
   startTime = Date.now();
+
+  document.getElementById("setup").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+  document.getElementById("instruction").textContent = `Good luck, ${playerName}! Guess a number between 1 and ${maxNum}.`;
+  document.getElementById("result").textContent = "";
+  document.getElementById("guessInput").value = "";
+  updateTimer();
   interval = setInterval(updateTimer, 100);
 }
 
 function updateTimer() {
   const elapsed = (Date.now() - startTime) / 1000;
-  document.getElementById('timer').textContent = `⏱ Time: ${elapsed.toFixed(1)}s`;
+  document.getElementById("timer").textContent = `⏱ Time: ${elapsed.toFixed(1)}s`;
 }
 
-function submit() {
-  const guess = parseInt(document.getElementById('guessInput').value);
+function submitGuess() {
+  const guess = parseInt(document.getElementById("guessInput").value);
   if (isNaN(guess)) return;
 
-  const response = Module.ccall('submitGuess', 'string', ['number'], [guess]);
-  document.getElementById('result').textContent = response;
+  attempts++;
 
-  if (response.includes('Correct!')) {
+  const result = document.getElementById("result");
+  if (guess > target) result.textContent = "Too high!";
+  else if (guess < target) result.textContent = "Too low!";
+  else {
     clearInterval(interval);
-    document.getElementById('restartBtn').style.display = 'inline-block';  // 顯示再玩一次按鈕
+    const timeTaken = ((Date.now() - startTime) / 1000).toFixed(1);
+    result.textContent = `Congrats ${playerName}, you guessed it right! You took ${attempts} attempts and ${timeTaken} seconds.`;
   }
 }
-function restart() {
-  document.getElementById('setup').style.display = 'block';   // 顯示開始設定
-  document.getElementById('game').style.display = 'none';    // 隱藏遊戲區
-  document.getElementById('restartBtn').style.display = 'none'; // 隱藏再玩一次按鈕
-  document.getElementById('guessInput').value = '';          // 清空輸入框
-  document.getElementById('result').textContent = '';        // 清空結果訊息
-  document.getElementById('timer').textContent = '⏱ Time: 0.0s'; // 重置計時顯示
-}
 
-// 等待 Module 載入
-Module.onRuntimeInitialized = () => {
-  console.log("WASM Ready");
-};
-
-function downloadLeaderboard() {
-  // 透過 Module.FS 讀檔
-  try {
-    const data = Module.FS.readFile('leaderboard.txt', { encoding: 'utf8' });
-    const blob = new Blob([data], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'leaderboard.txt';
-    a.click();
-    URL.revokeObjectURL(url);
-  } catch (err) {
-    alert("No leaderboard data found.");
-  }
+function restartGame() {
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("setup").classList.remove("hidden");
 }
